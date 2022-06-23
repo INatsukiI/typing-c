@@ -8,6 +8,7 @@
 /*現在のコンパイル方法gcc typing.c size.c screen.c -o typing.exe -lncursesw*/
 
 int main(int argc, char **argv) {  
+    int flag = 0;
     int check = 1;
     
     /*./typing以外で実行した場合エラー*/
@@ -30,10 +31,8 @@ int main(int argc, char **argv) {
     /*メニュー画面表示*/
     menu_screen();
     
-    /*メニュー画面処理(まだメニューを表示するだけ)*/
     /* 文字をバッファーに溜めない */  
     crmode();  
-  
     /* 入力文字を出力しない */  
     noecho(); 
     while(true){
@@ -55,7 +54,7 @@ int main(int argc, char **argv) {
         }else if(ch == '3'){
             /*難易度選択画面表示*/
             clear();
-            mvprintw(16, 70, "3.Level");
+            flag = level_screen();
             refresh();
             sleep (1);
             break;
