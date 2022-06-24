@@ -10,6 +10,7 @@
 int main(int argc, char **argv) {  
     int flag = 0;
     int check = 1;
+    int ch = 0;
     
     /*./typing以外で実行した場合エラー*/
     if(argc != 1){
@@ -28,41 +29,45 @@ int main(int argc, char **argv) {
         sleep (1);
     }
     
-    /*メニュー画面表示*/
-    menu_screen();
     
     /* 文字をバッファーに溜めない */  
     crmode();  
     /* 入力文字を出力しない */  
-    noecho(); 
-    while(true){
-        int ch = getch();
-        if(ch == '1'){
-            /*ゲーム開始処理*/
-            clear();
-            mvprintw(12, 70, "1.Start");
-            refresh();
-            sleep (1);
-            break;
-        }else if(ch == '2'){
-            /*ランキング画面表示*/
-            clear();
-            mvprintw(14, 70, "2.Ranking");
-            refresh();
-            sleep (1);
-            break;
-        }else if(ch == '3'){
-            /*難易度選択画面表示*/
-            clear();
-            flag = level_screen();
-            refresh();
-            sleep (1);
-            break;
-        }else if(ch == '4'){
-            /*ゲーム終了画面表示*/
-            end_screen();
-            sleep (1);
-            break;
+    noecho();
+    while(ch != '4'){
+        /*メニュー画面表示*/
+        menu_screen();
+        while(true){
+            ch = getch();
+            if(ch == '1'){
+                /*ゲーム開始処理*/
+                clear();
+                mvprintw(12, 70, "1.Start");
+                refresh();
+                sleep (1);
+                break;
+            }else if(ch == '2'){
+                /*ランキング画面表示*/
+                clear();
+                ranking_screen();
+                refresh();
+                sleep (1);
+                break;
+            }else if(ch == '3'){
+                /*難易度選択画面表示*/
+                clear();
+                flag = level_screen();
+                refresh();
+                sleep (1);
+                break;
+            }else if(ch == '4'){
+                /*ゲーム終了画面表示*/
+                clear();
+                end_screen();
+                refresh();
+                sleep (1);
+                break;
+            }
         }
     }
     
