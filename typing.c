@@ -4,8 +4,9 @@
 #include <stdlib.h>
 #include "size.h"
 #include "screen.h"
+#include "game.h"
 
-/*現在のコンパイル方法gcc typing.c size.c screen.c -o typing.exe -lncursesw*/
+/*現在のコンパイル方法gcc typing.c size.c screen.c game.c -o typing.exe -lncursesw*/
 
 int main(int argc, char **argv) {  
     int flag = 0;
@@ -42,7 +43,7 @@ int main(int argc, char **argv) {
             if(ch == '1'){
                 /*ゲーム開始処理*/
                 clear();
-                mvprintw(12, 70, "1.Start");
+                game_screen(flag);
                 refresh();
                 sleep (1);
                 break;

@@ -89,7 +89,9 @@ int level_screen(void){
         mvprintw(24, 60, "0,1,2以外が入力されました");
         ch = getch();
     }
-    return ch;
+    if(ch == '0') return 0;
+    if(ch == '1') return 1;
+    if(ch == '2') return 2;
 }
 
 /*ゲーム終了画面表示*/

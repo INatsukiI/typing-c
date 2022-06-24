@@ -1,11 +1,10 @@
 #include "size.h"
 
-int screen_size_check(void){
-    int x,y;
+
+int screen_check(int x, int y){
     char *str1 = "画面サイズを150×30にして下さい";
     char *str2 = "画面サイズ150×30なのでメニュー画面に遷移します";
     
-    getmaxyx(stdscr, y,x);
     if(y!=30 || x!=150){
         y = y/2;
         x = (x - strlen(str1))/2;
@@ -17,4 +16,12 @@ int screen_size_check(void){
         mvprintw(y, x, str2);
         return 0;
     }
+}
+
+
+int screen_size_check(void){
+    int x,y;
+    
+    getmaxyx(stdscr, y,x);
+    return screen_check(x,y);
 }
