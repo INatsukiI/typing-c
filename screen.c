@@ -52,7 +52,7 @@ void ranking_screen(void){
         exit(1);
     }
     /*ファイルがある場合読み取り,その表示*/
-    while(fscanf(fp1,"%s %d", score_easy[i].name, &score_easy[i].score) != EOF && fscanf(fp2,"%s %d", score_nomal[i].name, &score_nomal[i].score) && fscanf(fp3,"%s %d", score_hard[i].name, &score_hard[i].score) ){
+    while(fscanf(fp1,"%s %d", score_easy[i].name, &score_easy[i].score) != EOF && fscanf(fp2,"%s %d", score_nomal[i].name, &score_nomal[i].score) != EOF && fscanf(fp3,"%s %d", score_hard[i].name, &score_hard[i].score) != EOF){
         i++;
     }
     clear();
