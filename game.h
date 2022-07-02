@@ -7,6 +7,7 @@
 #define MAX_SCREEN_X 150
 #define MAX_SCREEN_Y 30
 #define MAX_Q_SIZE 30
+#define SCORE_CHECK_ST_SIZE 5
 #define GAME_SC_1 "ゲームを開始します"
 #define GAME_SC_2 "このゲームの難易度は"
 #define GAME_SC_3 "準備ができたらEnterを押してください"
@@ -15,13 +16,20 @@
 #define GAME_TIME 20
 
 typedef struct{
+    char name[4];
+    int score;
+}SCORE_CHECK_ST;
+
+typedef struct{
     int q_num;
     char question[20];
 }QUESTION;
 
 
 QUESTION question[MAX_Q_SIZE];
-FILE *fp;
+SCORE_CHECK_ST score[SCORE_CHECK_ST_SIZE],user_score;
+FILE *fp_q;
+FILE *fq_s;
 
 
 int score_init(int x);

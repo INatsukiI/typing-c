@@ -5,10 +5,61 @@ int score_init(int x){
     x = 0;
     return x; 
 }
+
+/*ランキング書き込み処理に使う関数、ランキングファイルを読み込み、ユーザーがランクインした際に
+  そのスコアを含めた6つのデータでソート処理を行い、上位5つのデータをランキングファイルに上書きする形で書き込む*/
+int score_update(int score, int level_flag){
+    int i=0;
+    int flag=0;
+    int rank_index;
+    char file_ranking_name[][20] = {"ranking_easy.txt", "ranking_nomal.txt", "ranking_hard.txt"};
+    
+    if ((fp_s = fopen(file_ranking_name[level_flag], "r+")) == NULL){
+        mvprintw(20, 70, "ファイル%sがありません", file_ranking_name[level_flag]);
+        refresh();
+        sleep(1);
+        clear();
+        refresh();
+        exit(1);
+    }
+    
+    while(fscanf(fp_s,"%s %d", score[i].name, &score[i].score) != EOF){
+        i++;
+    }
+    
+    for(i=0; i<5; i++){
+        if(score > score[i].score){
+            flag = 1;
+            rank_index = i;
+            break;
+        }
+    }
+    
+    if(flag != 1){
+        fclose(fp_s);
+        return 0;
+    }else{
+        mvprintw(20, 70, "ランクインしました");
+        mvprintw(21, 70, "ランキング登録するために");
+        mvprintw(22, 70, "名前入力画面に遷移します");
+    }
+    
+    
+    
+    
+}
 /*未完成の終了処理*/
-void finish_game(int x){
+/*ランキングファイルに書き込み処理を行う*/
+void finish_game(int score, int level_flag){
+    int flag=0;
+    
     clear();
-    mvprintw(15, (MAX_SCREEN_X/2-(strlen(GAME_SC_5)/2)) + 2, "%s%dです!", GAME_SC_5,x);
+    mvprintw(15, (MAX_SCREEN_X/2-(strlen(GAME_SC_5)/2)) + 2, "%s%dです!", GAME_SC_5,score);
+    flag = score_update(score, level_flag);
+    
+    
+    
+    
     refresh();
     sleep(2);
 }
@@ -17,7 +68,7 @@ void load_q_file(int level_flag){
     char file_name[][12] = {"q_easy.txt", "q_nomal.txt", "q_hard.txt"};
     int i=0;
     
-    if ((fp = fopen(file_name[level_flag], "r")) == NULL){
+    if ((fp_q = fopen(file_name[level_flag], "r")) == NULL){
         mvprintw(15, 70, "ファイル%sがありません", file_name[level_flag]);
         refresh();
         sleep(1);
@@ -26,7 +77,7 @@ void load_q_file(int level_flag){
         exit(1);
     }
     
-    while(fscanf(fp,"%d %s", &question[i].q_num, question[i].question) != EOF ){
+    while(fscanf(fp_q,"%d %s", &question[i].q_num, question[i].question) != EOF ){
         i++;
     }
     /*clear();
@@ -53,7 +104,6 @@ void game_main(int level_flag){
     int score;
     int ch;
     int q_num;
-    int flag=0;
     int j=0;
     char *p;
     time_t st, ed;
@@ -102,10 +152,7 @@ void game_main(int level_flag){
                 
             }else{
                 if(score != 0 ){
-                    clear();
                     score--;
-                    mvprintw(3, MAX_SCREEN_X/2,"%d",score);
-                    refresh();
                 }
             }
             mvprintw(3, MAX_SCREEN_X/2,"%d",score);
@@ -113,7 +160,7 @@ void game_main(int level_flag){
             ed = time(NULL);
         }
     }
-    finish_game(score);
+    finish_game(score,level_flag);
 }
 
 
