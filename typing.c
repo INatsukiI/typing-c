@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
     }
     
     /*画面サイズチェック処理*/
-    setlocale(LC_ALL,"");
+    setlocale(LC_ALL,""); 
     initscr();
     refresh();
     while(check != 0){

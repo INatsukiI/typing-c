@@ -18,3 +18,13 @@
 18 bias
 19 dark
 20 python
+21 ruby
+22 argc
+23 aim
+24 ask
+25 boy
+26 fat
+27 fee
+28 docker
+29 fly
+30 key
