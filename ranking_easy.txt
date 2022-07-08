@@ -2,4 +2,4 @@ aaa 500
 bbb 400
 ccc 300
 eee 200
-fff 100
+fff 10
