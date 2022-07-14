@@ -58,9 +58,9 @@ void ranking_screen(void){
     clear();
     screen_rank();
     for(i=0; i<5; i++){
-        mvprintw(12+i*3, 30, "%d     %s     %d",i+1,score_easy[i].name, score_easy[i].score);
-        mvprintw(12+i*3, 70, "%d     %s     %d",i+1,score_nomal[i].name, score_nomal[i].score);
-        mvprintw(12+i*3, 110,"%d     %s     %d",i+1,score_hard[i].name, score_hard[i].score);
+        mvprintw(12+i*3, 30, "%d     %s     %3d",i+1,score_easy[i].name, score_easy[i].score);
+        mvprintw(12+i*3, 70, "%d     %s     %3d",i+1,score_nomal[i].name, score_nomal[i].score);
+        mvprintw(12+i*3, 110,"%d     %s     %3d",i+1,score_hard[i].name, score_hard[i].score);
         refresh();
     }
     mvprintw(27, 60, "戻る場合は0を入力して下さい");

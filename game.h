@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <time.h>
+#include <sys/stat.h>
 
 #define MAX_SCREEN_X 150
 #define MAX_SCREEN_Y 30
@@ -31,13 +32,12 @@ typedef struct{
 }QUESTION;
 
 QUESTION question[MAX_Q_SIZE];
-SCORE_CHECK_ST rank_score[SCORE_CHECK_ST_SIZE];
+SCORE_CHECK_ST rank_score[SCORE_CHECK_ST_SIZE],user_score;
 FILE *fp_q;
 FILE *fq_s;
 
-
 int score_init(int x);
-int score_rankcheck(int score, int level_flag);
+int score_rank_check(int score, int level_flag);
 void input_name(char user_name[10]);
 void finish_game(int score, int level_flag);
 void load_q_file(int level_flag);

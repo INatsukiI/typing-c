@@ -5,20 +5,6 @@ int score_init(int x){
     x = 0;
     return x; 
 }
-/*ランキングファイルに登録する際に名前を入力する際に使う関数.上から文字のカウント(多分使わない)、名前入力の画面表示、名前入力処理*/
-/*int name_lengh_check(char *name){
-    int count = 0;
-
-    while (*name != '\0') {
-            count++;
-            name++;
-    }
-    if(count <= 3){
-        return 1;
-    }else{
-        return 0;
-    }
-}*/
 
 void input_name_screen(void){
     clear();
@@ -34,7 +20,7 @@ void input_name(char *user_name){
     echo();
     getstr(name);
     for(int i=0; i<3; i++){
-        if(name[i] <= 'a' || name[i] >= 'z'){
+        if(name[i] < 'a' || name[i] > 'z'){
            flag=1;
         }
         user_name[i] = name[i];
@@ -46,7 +32,7 @@ void input_name(char *user_name){
         input_name_screen();
         getstr(name);
         for(int i=0; i<3; i++){
-            if(name[i] <= 'a' || name[i] >= 'z'){
+            if(name[i] < 'a' || name[i] > 'z'){
                 flag=1;
             }
             user_name[i] = name[i];
@@ -56,14 +42,13 @@ void input_name(char *user_name){
 }
 
 /*ランキング書き込み処理に使う関数、ランキングファイルを読み込み、ユーザーがランクインした際に
-  そのスコアを含めた6つのデータでソート処理を行い、上位5つのデータをランキングファイルに上書きする形で書き込む
-  (07/08)名前入力処理までは終わったので次は名前とスコアを使ってファイルの書き込みをする*/
-int score_rankcheck(int score, int level_flag){
+  そのスコアを含めた6つのデータでソート処理を行い、上位5つのデータをランキングファイルに上書きする形で書き込む*/
+int score_rank_check(int score, int level_flag){
     int i=0;
     int flag=0;
     char file_ranking_name[][20] = {"ranking_easy.txt", "ranking_nomal.txt", "ranking_hard.txt"};
     
-    if ((fq_s = fopen(file_ranking_name[level_flag], "r+")) == NULL){
+    if ((fq_s = fopen(file_ranking_name[level_flag], "r")) == NULL){
         mvprintw(20, 70, "ファイル%sがありません", file_ranking_name[level_flag]);
         refresh();
         sleep(1);
@@ -91,21 +76,77 @@ int score_rankcheck(int score, int level_flag){
         return 1;
     }
 }
-/*未完成の終了処理*/
+    
+int existFile(const char* path){
+    struct stat st;
+
+    if (stat(path, &st) != 0) {
+        return 0;
+    }
+    return (st.st_mode & S_IFMT) == S_IFREG;
+}
+    
+void ranking_write(char *user_name, int score, int level_flag){
+    /*ランキングファイルの5つとユーザ1つのスコアから上位5つをソート*/
+    int index;
+    memcpy(user_score.name, user_name, sizeof(user_name));
+    user_score.score = score;
+    int i;
+    int j;
+    
+    for(i=0; i<5; i++){
+        if(rank_score[i].score <= user_score.score){
+            index = i;
+            break;
+        }
+    }
+    j=5;
+    
+    while(index+1 < j){
+        rank_score[j].score = rank_score[j-1].score;
+        memcpy(rank_score[j].name, rank_score[j-1].name, sizeof(rank_score[j-1].name));
+        j--;
+    }
+    memcpy(rank_score[index].name, user_score.name, sizeof(user_score.name));
+    rank_score[index].score = user_score.score;
+    
+    
+    /*ランキングファイルを開いて書き込む処理を書く*/
+    char file_ranking_name[][20] = {"ranking_easy.txt", "ranking_nomal.txt", "ranking_hard.txt"};
+    
+    /*ファイルが存在するかの処理を書く*/
+    if (existFile(file_ranking_name[level_flag])) {
+        fq_s = fopen(file_ranking_name[level_flag], "w+");
+    
+        for(int k=0; k<5; k++){
+            fprintf(fq_s, "%s %d\n",rank_score[k].name, rank_score[k].score);
+        }
+        fclose(fq_s);
+    }else{
+        mvprintw(15, 70, "ファイル%sがありません", file_ranking_name[level_flag]);
+        refresh();
+        sleep(1);
+        clear();
+        refresh();
+        exit(1);
+    }
+}
+/*完成の終了処理*/
 /*ランキングファイルに書き込み処理を行う*/
 void finish_game(int score, int level_flag){
     int flag=0;
     char user_name[4];
     clear();
     mvprintw(15, MAX_SCREEN_X/2-(strlen(GAME_SC_5)/2), "%s%dです!", GAME_SC_5,score);
-    flag = score_rankcheck(score, level_flag);
+    flag = score_rank_check(score, level_flag);
     if(flag==1){
         mvprintw(20, MAX_SCREEN_X/2-(strlen(GAME_SC_6)/2)+3,"%s",GAME_SC_6);
         mvprintw(21, MAX_SCREEN_X/2-(strlen(GAME_SC_7)/2)+5,"%s",GAME_SC_7);
         mvprintw(22, MAX_SCREEN_X/2-(strlen(GAME_SC_8)/2)+5,"%s",GAME_SC_8);
         refresh();
-        sleep(3);
+        sleep(2);
         input_name(user_name);
+        ranking_write(user_name, score, level_flag);
         clear();
         mvprintw(20, MAX_SCREEN_X/2-(strlen(user_name)/2)+5,"%s",user_name);
         refresh();
