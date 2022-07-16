@@ -30,6 +30,7 @@ void screen_rank(void){
 void ranking_screen(void){
     int i=0;
     int ch;
+    noecho();
     /*ファイルがない場合メッセージを表示して強制終了*/
     if ((fp1 = fopen("ranking_easy.txt", "r")) == NULL) {
         clear();

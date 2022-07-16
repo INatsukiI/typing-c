@@ -18,8 +18,8 @@
 #define GAME_SC_7 "ランキング登録するために"
 #define GAME_SC_8 "名前入力画面に遷移します"
 #define GAME_SC_9 "ランクインおめでとうございます！"
-#define GAME_SC_10 "名前を3文字以内,半角英数字で入力して下さい"
-#define GAME_TIME 10
+#define GAME_SC_10 "名前を3文字,半角英字で入力して下さい"
+#define GAME_TIME 30
 
 typedef struct{
     char name[4];

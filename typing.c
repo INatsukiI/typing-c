@@ -45,7 +45,6 @@ int main(int argc, char **argv) {
                 clear();
                 game_screen(flag);
                 refresh();
-                sleep (1);
                 break;
             }else if(ch == '2'){
                 /*ランキング画面表示*/

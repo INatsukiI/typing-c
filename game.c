@@ -1,9 +1,28 @@
 #include "game.h"
-
+#include "game_key_define.h"
 /*スコアの初期化*/
 int score_init(int x){
     x = 0;
     return x; 
+}
+
+void print_key(void){
+    for(int i=0; i<=12; i++){
+        mvprintw(15+i, MAX_SCREEN_X/2-(strlen(key[i])/2), "%s", key[i]);
+    }
+}
+
+void key_flash(char x){
+    int x_zahyo,y_zahyo;
+    for(int i=0; i<26; i++){
+        if(x==key2[i]){
+            x_zahyo = key_zahyo[i][0];
+            y_zahyo = key_zahyo[i][1];
+        }
+    }
+    move(y_zahyo, x_zahyo);
+    addch(x| COLOR_PAIR(COLOR_RED));
+    
 }
 
 void input_name_screen(void){
@@ -16,7 +35,9 @@ void input_name_screen(void){
 void input_name(char *user_name){
     char name[10];
     int flag=0;
+    
     input_name_screen();
+    curs_set(1);
     echo();
     getstr(name);
     for(int i=0; i<3; i++){
@@ -77,7 +98,7 @@ int score_rank_check(int score, int level_flag){
     }
 }
     
-int existFile(const char* path){
+int exist_file(const char* path){
     struct stat st;
 
     if (stat(path, &st) != 0) {
@@ -115,7 +136,7 @@ void ranking_write(char *user_name, int score, int level_flag){
     char file_ranking_name[][20] = {"ranking_easy.txt", "ranking_nomal.txt", "ranking_hard.txt"};
     
     /*ファイルが存在するかの処理を書く*/
-    if (existFile(file_ranking_name[level_flag])) {
+    if (exist_file(file_ranking_name[level_flag])) {
         fq_s = fopen(file_ranking_name[level_flag], "w+");
     
         for(int k=0; k<5; k++){
@@ -148,12 +169,7 @@ void finish_game(int score, int level_flag){
         input_name(user_name);
         ranking_write(user_name, score, level_flag);
         clear();
-        mvprintw(20, MAX_SCREEN_X/2-(strlen(user_name)/2)+5,"%s",user_name);
-        refresh();
     }
-    refresh();
-    sleep(2);
-    
 }
 
 void load_q_file(int level_flag){
@@ -217,6 +233,7 @@ void game_main(int level_flag){
         refresh();
         sleep(1);
     }
+      
     clear();
     /*タイマー開始*/
     st = time(NULL);
@@ -232,16 +249,21 @@ void game_main(int level_flag){
         /*mvprintw(3, MAX_SCREEN_X/2,"%d",ed - st);*/
         mvprintw(3, MAX_SCREEN_X/2,"%d",score);
         mvprintw(10, MAX_SCREEN_X/2 - (strlen(p)/2),"%s",p);
+        print_key();
         refresh();
         /*文字を入力させ、合っているか確認*/
         j=0;
         while(ed - st < GAME_TIME && (strlen(p) > j)){
+            key_flash(p[j]);
+            curs_set(0);
+            refresh();
             ch = getch();
             if(ch == p[j]){
                 move(10, (MAX_SCREEN_X/2 - (strlen(p)/2)) + j);
                 addch(ch| COLOR_PAIR(COLOR_RED));
                 j++;
                 score++;
+                print_key();
                 
             }else{
                 if(score != 0 ){
