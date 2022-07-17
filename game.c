@@ -110,7 +110,7 @@ int exist_file(const char* path){
 void ranking_write(char *user_name, int score, int level_flag){
     /*ランキングファイルの5つとユーザ1つのスコアから上位5つをソート*/
     int index;
-    memcpy(user_score.name, user_name, sizeof(user_name));
+    memcpy(user_score.name, user_name, strlen(user_name));
     user_score.score = score;
     int i;
     int j;
@@ -209,7 +209,7 @@ void draw_before_game(int level_flag){
 }
 
 void game_main(int level_flag){
-    int score;
+    int score=0;
     int ch;
     int q_num;
     int j=0;

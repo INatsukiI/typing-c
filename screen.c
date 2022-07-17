@@ -93,6 +93,8 @@ int level_screen(void){
     if(ch == '0') return 0;
     if(ch == '1') return 1;
     if(ch == '2') return 2;
+    
+    return 0;
 }
 
 /*ゲーム終了画面表示*/
